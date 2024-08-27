@@ -5,13 +5,13 @@ interface RegisterFormProps {
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(email, password, confirmPassword);
+    onSubmit(username, password, confirmPassword);
   };
 
   return (
@@ -19,14 +19,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
       <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
 
       <div className="mb-4">
-        <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
-          Email
+        <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2">
+          Username
         </label>
         <input
-          type="email"
+          type="username"
           id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           required
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         />

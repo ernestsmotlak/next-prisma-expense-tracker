@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 interface RegisterFormProps {
-  onSubmit: (email: string, password: string, confirmPassword: string) => void;
+  onSubmit: (username: string, password: string, confirmPassword: string) => void;
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,16 +15,22 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow duration-300"
+    >
       <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
 
       <div className="mb-4">
-        <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2">
+        <label
+          htmlFor="username"
+          className="block text-gray-700 text-sm font-bold mb-2"
+        >
           Username
         </label>
         <input
-          type="username"
-          id="email"
+          type="text"
+          id="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
@@ -33,7 +39,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
+        <label
+          htmlFor="password"
+          className="block text-gray-700 text-sm font-bold mb-2"
+        >
           Password
         </label>
         <input
@@ -47,7 +56,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
       </div>
 
       <div className="mb-6">
-        <label htmlFor="confirm-password" className="block text-gray-700 text-sm font-bold mb-2">
+        <label
+          htmlFor="confirm-password"
+          className="block text-gray-700 text-sm font-bold mb-2"
+        >
           Confirm Password
         </label>
         <input

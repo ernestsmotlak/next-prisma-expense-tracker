@@ -17,7 +17,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg"
+      className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg shadow-lg hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow duration-300"
     >
       <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
 

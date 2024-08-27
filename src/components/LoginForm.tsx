@@ -12,7 +12,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3012/login', {  // Replace '/api/login' with your API route
+      const response = await fetch('http://localhost:3012/login', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

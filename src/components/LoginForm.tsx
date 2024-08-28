@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 interface LoginFormProps {
   onSubmit: (username: string, password: string) => void;
@@ -12,10 +12,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3012/login', { 
-        method: 'POST',
+      const response = await fetch("http://localhost:3012/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
       });
@@ -27,25 +27,32 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
       const { token } = await response.json();
 
       // Save the token to localStorage
-      localStorage.setItem('token', token);
+      localStorage.setItem("token", token);
 
       // Set success message
       setSuccessMessage("Logged in successfully!");
-
     } catch (error) {
       console.error("Login error:", error);
-      setSuccessMessage("");  // Clear the success message in case of error
+      setSuccessMessage(""); // Clear the success message in case of error
       // Handle error (e.g., show error message)
     }
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg"
+      >
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
 
         <div className="mb-4">
-          <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2">Username</label>
+          <label
+            htmlFor="username"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Username
+          </label>
           <input
             type="text"
             id="username"
@@ -57,7 +64,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">Password</label>
+          <label
+            htmlFor="password"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Password
+          </label>
           <input
             type="password"
             id="password"

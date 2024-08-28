@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface LoginFormProps {
   onSubmit: (username: string, password: string) => void;
@@ -8,6 +9,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,6 +33,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
 
       // Set success message
       setSuccessMessage("Logged in successfully!");
+
+      // Navigate to the expenses page
+      router.push(`/user`);
     } catch (error) {
       console.error("Login error:", error);
       setSuccessMessage(""); // Clear the success message in case of error

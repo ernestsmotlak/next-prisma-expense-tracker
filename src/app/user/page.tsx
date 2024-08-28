@@ -54,21 +54,28 @@ const UserExpensesPage = () => {
   }, []);
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="text-red-500 text-center p-4">Error: {error}</div>;
   }
 
   return (
-    <div>
-      <h1>{username}'s Expenses</h1>
-      <ul>
+    <div className="p-6 max-w-4xl mx-auto shadow-lg hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow duration-300">
+      <h1 className="text-3xl font-bold mb-6 text-center">{username}'s Expenses</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {expenses.map((expense, index) => (
-          <li key={index}>
-            <p>Group: {expense.groupName}</p>
-            <p>Amount Paid: ${expense.amountPaid}</p>
-            <p>Paid For: {expense.paidFor}</p>
-          </li>
+          <div
+            key={index}
+            className="bg-white shadow-md rounded-lg p-4 border border-gray-200 shadow-lg hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow duration-300"
+          >
+            <h2 className="text-xl font-semibold mb-2">{expense.groupName}</h2>
+            <p className="text-gray-700 mb-2">
+              <strong>Amount Paid:</strong> ${expense.amountPaid.toFixed(2)}
+            </p>
+            <p className="text-gray-600">
+              <strong>Paid For:</strong> {expense.paidFor}
+            </p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

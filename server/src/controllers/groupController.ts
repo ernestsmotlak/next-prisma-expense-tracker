@@ -89,6 +89,12 @@ export const showAllGroups = async (req: Request, res: Response) => {
   const userIdNumber = Number(userId);
 
   try {
+    if (req.user?.id !== userIdNumber) {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to see this data! " });
+    }
+
     if (isNaN(userIdNumber)) {
       return res.status(400).json({ error: "Invalid userId!" });
     }
@@ -100,10 +106,10 @@ export const showAllGroups = async (req: Request, res: Response) => {
           { creatorId: userIdNumber },
           {
             participants: {
-              some: { id: userIdNumber }
-            }
-          }
-        ]
+              some: { id: userIdNumber },
+            },
+          },
+        ],
       },
       include: {
         participants: true,

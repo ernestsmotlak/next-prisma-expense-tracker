@@ -31,7 +31,7 @@ export const getExpensesForUser = async (req: Request, res: Response) => {
     });
 
     // Format the response to include only the desired fields
-    const formattedExpenses = expenses.map((expense) => ({
+    const formattedExpenses = expenses.map((expense: any) => ({
       paidByUsername: expense.paidBy.username, // Add the full username to each expense
       password: expense.paidBy.password,
       groupId: expense.group.id, // Add the group ID

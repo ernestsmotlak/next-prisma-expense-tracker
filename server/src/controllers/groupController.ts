@@ -112,27 +112,32 @@ export const showAllGroups = async (req: Request, res: Response) => {
         ],
       },
       include: {
-        participants: true,
+        participants: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
         creator: {
           select: {
             id: true,
             username: true,
           },
         },
-        expenses: {
-          select: {
-            id: true,
-            amountPaid: true,
-            paidFor: true,
-            expenseName: true,
-            paidBy: {
-              select: {
-                id: true,
-                username: true,
-              },
-            },
-          },
-        },
+        // expenses: {
+        //   select: {
+        //     id: true,
+        //     amountPaid: true,
+        //     paidFor: true,
+        //     expenseName: true,
+        //     paidBy: {
+        //       select: {
+        //         id: true,
+        //         username: true,
+        //       },
+        //     },
+        //   },
+        // },
       },
     });
 

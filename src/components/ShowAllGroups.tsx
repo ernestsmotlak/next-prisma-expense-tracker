@@ -6,13 +6,13 @@ interface User {
   username: string;
 }
 
-interface Expense {
-  id: number;
-  expenseName: string;
-  amountPaid: number;
-  paidBy: User | User[]; // Adjusted to handle both single object and array
-  paidFor: string;
-}
+// interface Expense {
+//   id: number;
+//   expenseName: string;
+//   amountPaid: number;
+//   paidBy: User | User[]; // Adjusted to handle both single object and array
+//   paidFor: string;
+// }
 
 const ShowAllGroups = () => {
   const [groups, setGroups] = useState<any[]>([]); // Changed to any[] for flexibility
@@ -82,7 +82,7 @@ const ShowAllGroups = () => {
               <strong>Participants:</strong>{" "}
               {group.participants.map((p: User) => p.username).join(", ")}
             </p>
-            <div>
+            {/* <div>
               <h3 className="text-lg font-semibold mb-2">Expenses:</h3>
               {group.expenses.map((expense: Expense) => (
                 <div key={expense.id} className="mb-4">
@@ -104,7 +104,7 @@ const ShowAllGroups = () => {
                   </p>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         ))}
       </div>

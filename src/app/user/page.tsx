@@ -1,4 +1,17 @@
-"use client";
+import ShowAllGroups from "@/components/ShowAllGroups";
+
+const Page: React.FC = () => {
+  return (
+    <div>
+      <h1>User Dashboard</h1>
+      <ShowAllGroups />
+    </div>
+  );
+};
+
+export default Page;
+
+/* "use client";
 import { useEffect, useState } from "react";
 
 interface Expense {
@@ -85,3 +98,4 @@ const UserExpensesPage = () => {
 };
 
 export default UserExpensesPage;
+*/

@@ -26,11 +26,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
         throw new Error("Login failed");
       }
 
-      const { token } = await response.json();
+      const { token, userId } = await response.json();
 
       // Save the token to localStorage
       localStorage.setItem("token", token);
-      localStorage.setItem('username', username);
+      localStorage.setItem("username", username);
+      localStorage.setItem("userId", userId.toString());
 
       // Set success message
       setSuccessMessage("Logged in successfully!");

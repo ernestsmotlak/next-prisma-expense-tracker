@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { error } from "console";
+import { error, group } from "console";
 
 const prisma = new PrismaClient();
 
@@ -37,5 +37,49 @@ export const createGroup = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "An error occured!" });
+  }
+};
+
+export const showGroup = async (req: Request, res: Response) => {
+  const { groupId } = req.params;
+  const groupIdNumber = Number(groupId);
+
+  try {
+    const groupData = await prisma.group.findUnique({
+      where: {
+        id: groupIdNumber,
+      },
+      include: {
+        creator: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+        expenses: {
+          select: {
+            id: true,
+            amountPaid: true,
+            paidFor: true,
+            expenseName: true,
+            paidBy: {
+              select: {
+                id: true,
+                username: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!groupData) {
+      return res.status(404).json({ error: "Group not found" });
+    }
+
+    res.status(200).json(groupData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred!" });
   }
 };

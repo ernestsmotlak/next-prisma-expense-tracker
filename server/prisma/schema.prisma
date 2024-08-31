@@ -8,29 +8,30 @@ generator client {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  username String    @unique
-  password String
-  groups   Group[]   @relation("GroupCreator")
-  expenses Expense[] @relation("PaidBy")
+  id          Int       @id @default(autoincrement())
+  username    String    @unique
+  password    String
+  groups      Group[]   @relation("GroupParticipants")
+  createdGroups Group[] @relation("GroupCreator")
+  expenses    Expense[] @relation("PaidBy")
 }
 
 model Group {
-  id           Int       @id @default(autoincrement())
-  name         String
-  creator      User      @relation("GroupCreator", fields: [creatorId], references: [id])
-  creatorId    Int
-  participants String
-  expenses     Expense[] @relation("GroupExpenses")
+  id          Int      @id @default(autoincrement())
+  name        String
+  creator     User     @relation("GroupCreator", fields: [creatorId], references: [id])
+  creatorId   Int
+  participants User[]  @relation("GroupParticipants")
+  expenses    Expense[]
 }
 
 model Expense {
-  id          Int      @id @default(autoincrement())
-  group       Group    @relation("GroupExpenses", fields: [groupId], references: [id])
-  groupId     Int
-  paidBy      User     @relation("PaidBy", fields: [paidById], references: [id])
-  paidById    Int
-  amountPaid  Float
-  paidFor     String
-  expenseName String   @default("Unknown Expense") // Default value added here
+  id         Int     @id @default(autoincrement())
+  groupId    Int
+  paidById   Int
+  amountPaid Float
+  paidFor    String
+  expenseName String
+  group      Group   @relation(fields: [groupId], references: [id])
+  paidBy     User    @relation("PaidBy", fields: [paidById], references: [id])
 }

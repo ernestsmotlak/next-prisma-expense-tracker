@@ -83,3 +83,56 @@ export const showGroup = async (req: Request, res: Response) => {
     res.status(500).json({ error: "An error occurred!" });
   }
 };
+
+export const showAllGroups = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const userIdNumber = Number(userId);
+
+  try {
+    if (isNaN(userIdNumber)) {
+      return res.status(400).json({ error: "Invalid userId!" });
+    }
+
+    // Fetch groups where the user is either the creator or a participant
+    const groups = await prisma.group.findMany({
+      where: {
+        OR: [
+          { creatorId: userIdNumber },
+          {
+            participants: {
+              some: { id: userIdNumber }
+            }
+          }
+        ]
+      },
+      include: {
+        participants: true,
+        creator: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+        expenses: {
+          select: {
+            id: true,
+            amountPaid: true,
+            paidFor: true,
+            expenseName: true,
+            paidBy: {
+              select: {
+                id: true,
+                username: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    res.status(200).json(groups);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred!" });
+  }
+};

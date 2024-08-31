@@ -17,6 +17,7 @@ const ShowAllGroups = () => {
   const [groups, setGroups] = useState<any[]>([]); // Changed to any[] for flexibility
   const [error, setError] = useState<string | null>(null);
   const userId = localStorage.getItem("userId");
+  const username = localStorage.getItem('username');
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -60,7 +61,7 @@ const ShowAllGroups = () => {
 
   return (
     <div className="p-6 max-w-4xl mx-auto shadow-lg hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow duration-300">
-      <h1 className="text-3xl font-bold mb-6 text-center">User Groups</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">{username}'s Groups</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {groups.map((group, index) => (
           <div

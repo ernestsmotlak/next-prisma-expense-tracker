@@ -1,10 +1,15 @@
+"use client"
+import Group from "@/components/Group";
 import ShowAllGroups from "@/components/ShowAllGroups";
+import { useState } from "react";
 
 const Page: React.FC = () => {
+  const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   return (
     <div>
       <h1>User Dashboard</h1>
-      <ShowAllGroups />
+      <ShowAllGroups onGroupClick={setSelectedGroupId} />
+      {selectedGroupId && <Group groupId={selectedGroupId}/>}
     </div>
   );
 };

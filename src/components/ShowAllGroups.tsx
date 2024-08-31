@@ -6,16 +6,12 @@ interface User {
   username: string;
 }
 
-// interface Expense {
-//   id: number;
-//   expenseName: string;
-//   amountPaid: number;
-//   paidBy: User | User[]; // Adjusted to handle both single object and array
-//   paidFor: string;
-// }
+interface ShowAllGroupsProps {
+  onGroupClick: (groupId: number) => void;
+}
 
-const ShowAllGroups = () => {
-  const [groups, setGroups] = useState<any[]>([]); // Changed to any[] for flexibility
+const ShowAllGroups: React.FC<ShowAllGroupsProps> = ({ onGroupClick }) => {
+  const [groups, setGroups] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const userId = localStorage.getItem("userId");
   const username = localStorage.getItem("username");
@@ -72,7 +68,9 @@ const ShowAllGroups = () => {
         {groups.map((group, index) => (
           <div
             key={index}
-            className="bg-white shadow-md rounded-lg p-4 border border-gray-200 shadow-lg hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow duration-300"
+            onClick={() => onGroupClick(group.id)}
+            className="bg-white shadow-md rounded-lg p-4 border border-gray-200 shadow-lg transition-shadow duration-300 bg-orange-100 hover:bg-red-400"
+            style={{ transition: "background-color 0.75s" }}
           >
             <h2 className="text-xl font-semibold mb-2">{group.name}</h2>
             <p className="text-gray-700 mb-2">
@@ -82,29 +80,6 @@ const ShowAllGroups = () => {
               <strong>Participants:</strong>{" "}
               {group.participants.map((p: User) => p.username).join(", ")}
             </p>
-            {/* <div>
-              <h3 className="text-lg font-semibold mb-2">Expenses:</h3>
-              {group.expenses.map((expense: Expense) => (
-                <div key={expense.id} className="mb-4">
-                  <h4 className="text-md font-semibold">
-                    {expense.expenseName}
-                  </h4>
-                  <p>
-                    <strong>Amount Paid:</strong> $
-                    {expense.amountPaid.toFixed(2)}
-                  </p>
-                  <p>
-                    <strong>Paid By:</strong>{" "}
-                    {Array.isArray(expense.paidBy)
-                      ? expense.paidBy.map((p) => p.username).join(", ")
-                      : expense.paidBy.username}
-                  </p>
-                  <p>
-                    <strong>Paid For:</strong> {expense.paidFor}
-                  </p>
-                </div>
-              ))}
-            </div> */}
           </div>
         ))}
       </div>

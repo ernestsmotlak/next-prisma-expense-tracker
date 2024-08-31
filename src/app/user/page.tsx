@@ -73,6 +73,9 @@ const UserExpensesPage = () => {
             </p>
             <p className="text-gray-600">
               <strong>Paid For:</strong> {expense.paidFor}
+              <br/>
+              GroupID: {expense.groupId}<br/>
+              
             </p>
           </div>
         ))}

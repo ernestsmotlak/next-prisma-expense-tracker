@@ -30,6 +30,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
 
       // Save the token to localStorage
       localStorage.setItem("token", token);
+      localStorage.setItem('username', username);
 
       // Set success message
       setSuccessMessage("Logged in successfully!");

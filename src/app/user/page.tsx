@@ -12,7 +12,8 @@ interface Expense {
 const UserExpensesPage = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const username = "alice"; // Assume 'alice' is the logged-in user
+  // const username = "alice"; 
+  const username = localStorage.getItem('username');
 
   useEffect(() => {
     const fetchExpenses = async () => {

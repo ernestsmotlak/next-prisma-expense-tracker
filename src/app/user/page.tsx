@@ -1,118 +1,42 @@
 "use client";
+import { useState } from "react";
 import Group from "@/components/Group";
 import ShowAllGroups from "@/components/ShowAllGroups";
-import { useState } from "react";
 
 const Page: React.FC = () => {
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
-  const groupIdNull = () => setSelectedGroupId(null);
+
+  const handleGroupClick = (groupId: number) => {
+    setSelectedGroupId(groupId);
+  };
+
+  const handleReturn = () => {
+    setSelectedGroupId(null);
+  };
 
   return (
     <div>
-      <h1>User Dashboard</h1>
-      <ShowAllGroups onGroupClick={setSelectedGroupId} />
-      {/* {selectedGroupId != null && <ShowAllGroups onGroupClick={setSelectedGroupId} />} */}
-      <div className="flex justify-center mt-10">
-        <button
-          type="button"
-          onClick={groupIdNull}
-          className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
-        >
-          Return
-        </button>
-      </div>
-      {selectedGroupId && <Group groupId={selectedGroupId} />}
+      <h1 className="text-3xl font-bold text-center mb-6">User Dashboard</h1>
+      
+      {/* Conditionally render components based on the state */}
+      {selectedGroupId === null ? (
+        <ShowAllGroups onGroupClick={handleGroupClick} />
+      ) : (
+        <div>
+          <div className="flex justify-center mt-10">
+            <button
+              type="button"
+              onClick={handleReturn}
+              className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
+            >
+              Return to Groups
+            </button>
+          </div>
+          <Group groupId={selectedGroupId} />
+        </div>
+      )}
     </div>
   );
 };
 
 export default Page;
-
-/* "use client";
-import { useEffect, useState } from "react";
-
-interface Expense {
-  paidByUsername: string;
-  groupId: number;
-  groupName: string;
-  amountPaid: number;
-  paidFor: string;
-}
-
-const UserExpensesPage = () => {
-  const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  // const username = "alice"; 
-  const username = localStorage.getItem('username');
-
-  useEffect(() => {
-    const fetchExpenses = async () => {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        setError("User not authenticated");
-        return;
-      }
-
-      try {
-        const response = await fetch(
-          `http://localhost:3012/api/expenses/${username}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-        }
-
-        const data: Expense[] = await response.json();
-        setExpenses(data);
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("An unknown error occurred");
-        }
-      }
-    };
-
-    fetchExpenses();
-  }, []);
-
-  if (error) {
-    return <div className="text-red-500 text-center p-4">Error: {error}</div>;
-  }
-
-  return (
-    <div className="p-6 max-w-4xl mx-auto shadow-lg hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow duration-300">
-      <h1 className="text-3xl font-bold mb-6 text-center">{username}'s Expenses</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {expenses.map((expense, index) => (
-          <div
-            key={index}
-            className="bg-white shadow-md rounded-lg p-4 border border-gray-200 shadow-lg hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow duration-300"
-          >
-            <h2 className="text-xl font-semibold mb-2">{expense.groupName}</h2>
-            <p className="text-gray-700 mb-2">
-              <strong>Amount Paid:</strong> ${expense.amountPaid.toFixed(2)}
-            </p>
-            <p className="text-gray-600">
-              <strong>Paid For:</strong> {expense.paidFor}
-              <br/>
-              GroupID: {expense.groupId}<br/>
-              
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default UserExpensesPage;
-*/

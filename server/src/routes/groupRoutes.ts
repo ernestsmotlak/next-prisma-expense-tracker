@@ -1,5 +1,5 @@
 import express from 'express';
-import { addExpense, getExpensesForUser, updateExpense, updateExpense2 } from '../controllers/expenseController';
+import { addExpense, getExpensesForUser, updateExpense } from '../controllers/expenseController';
 import { authenticateToken } from '../middleware/authMiddleware';
 import {createGroup, showAllGroups, showGroup} from '../controllers/groupController';
 

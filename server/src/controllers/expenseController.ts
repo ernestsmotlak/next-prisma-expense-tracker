@@ -96,68 +96,37 @@ export const addExpense = async (req: Request, res: Response) => {
   }
 };
 
-
-// this one will most likely be useless, DELETE ME!!!
 export const updateExpense = async (req: Request, res: Response) => {
-  const { expenseId } = req.params; // Get expenseId from URL parameters
-  const { amountPaid } = req.body; // Get amountPaid from the request body
+  const { expenseId } = req.params; // Correctly extract expenseId from URL parameters
+  const { expenseName, amountPaid, paidFor } = req.body; // Get updated data from request body
 
   try {
-    // Convert and validate input
-    const idOfExpense = Number(expenseId);
-    const paidAmount = parseFloat(amountPaid);
+    const amountPaidFloat = parseFloat(amountPaid);
 
-    // Validate input data
-    if (isNaN(idOfExpense) || isNaN(paidAmount)) {
-      return res.status(400).json({ error: "Invalid input data!" });
+    if (isNaN(amountPaidFloat) || !expenseName || expenseName.trim() === "") {
+      return res
+        .status(400)
+        .json({ error: "Invalid input data or missing expenseName" });
     }
 
-    // Update Expense record
-    const expenseUpdate = await prisma.expense.update({
-      where: { id: idOfExpense },
+    const updatedExpense = await prisma.expense.update({
+      where: { id: parseInt(expenseId, 10) }, // Use expenseId here
       data: {
-        amountPaid: paidAmount, // Update the amountPaid field
+        expenseName,
+        amountPaid: amountPaidFloat,
+        paidFor,
       },
     });
 
-    // Respond with the updated expense
-    res.status(200).json({ expenseUpdate });
+    if (!updatedExpense) {
+      return res.status(404).json({ error: "Expense not found" });
+    }
+
+    res.status(200).json(updatedExpense); // Respond with the updated expense
   } catch (error) {
-    console.error("Error updating expense!", error);
+    console.error("Error updating expense:", error);
     res
       .status(500)
-      .json({ error: "An error occurred while updating the expense!" });
-  }
-};
-
-export const updateExpense2 = async (req: Request, res: Response) => {
-  const { expenseId } = req.params;
-  const { groupId, paidById, amountPaid, paidFor, expenseName } = req.body;
-
-  try {
-    const expenseId2 = Number(expenseId);
-    const groupId2 = Number(groupId);
-    const paidById2 = Number(paidById);
-    const amountPaid2 = parseFloat(amountPaid);
-
-    if (isNaN(groupId2) || isNaN(paidById2) || isNaN(amountPaid2)) {
-      return res.status(400).json({ error: "Error in data!" });
-    }
-
-    const expenseUpdate2 = await prisma.expense.update({
-      where: { id: expenseId2 },
-      data: {
-        groupId: groupId2,
-        paidById: paidById2,
-        amountPaid: amountPaid2,
-        paidFor: paidFor,
-        expenseName: expenseName,
-      },
-    });
-
-    res.status(200).json({ expenseUpdate2 });
-  } catch (error) {
-    console.error("Error updating2!", error);
-    res.status(500).jsonp({ error: "An error occured upon updating2!" });
+      .json({ error: "An error occurred while updating the expense" });
   }
 };

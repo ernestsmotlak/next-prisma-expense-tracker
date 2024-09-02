@@ -1,5 +1,4 @@
-"use client";
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface ExpenseData {
   id: number;
@@ -14,9 +13,10 @@ interface ExpenseData {
 
 interface UpdateExpenseProps {
   expense: ExpenseData;
+  onSuccess: () => void; // Add onSuccess callback prop
 }
 
-const UpdateExpense: React.FC<UpdateExpenseProps> = ({ expense }) => {
+const UpdateExpense: React.FC<UpdateExpenseProps> = ({ expense, onSuccess }) => {
   const [expenseName, setExpenseName] = useState<string>(expense.expenseName);
   const [amountPaid, setAmountPaid] = useState<number>(expense.amountPaid);
   const [paidFor, setPaidFor] = useState<string>(expense.paidFor);
@@ -30,14 +30,14 @@ const UpdateExpense: React.FC<UpdateExpenseProps> = ({ expense }) => {
       expenseName,
       amountPaid,
       paidFor,
-      paidBy, // Assuming you have logic to handle this correctly in the backend
+      paidBy,
     };
 
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(`http://localhost:3012/expenses/update/${expense.id}`, {
-        method: "PUT", // Use PUT or POST depending on your backend setup
+      const response = await fetch(`http://localhost:3012/api/expenses/update/${expense.id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -49,7 +49,7 @@ const UpdateExpense: React.FC<UpdateExpenseProps> = ({ expense }) => {
         throw new Error("Failed to update the expense");
       }
 
-      // Optionally, handle successful update (e.g., show a message, redirect, etc.)
+      onSuccess(); // Call the success callback on successful update
     } catch (error) {
       console.error("Error updating expense:", error);
       // Optionally, handle the error (e.g., show an error message)

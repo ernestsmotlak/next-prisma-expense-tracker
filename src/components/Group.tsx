@@ -1,5 +1,4 @@
-"use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import UpdateExpense from "@/components/UpdateExpense";
 
@@ -32,32 +31,37 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
   const [selectedExpense, setSelectedExpense] = useState<GroupData['expenses'][0] | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchGroupData = async () => {
-      const token = localStorage.getItem("token");
+  const fetchGroupData = async () => {
+    const token = localStorage.getItem("token");
 
-      try {
-        const response = await fetch(`http://localhost:3012/group/${groupId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    try {
+      const response = await fetch(`http://localhost:3012/group/${groupId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch group data");
-        }
-
-        const data: GroupData = await response.json();
-        setGroup(data);
-      } catch (error: any) {
-        setError(error.message);
+      if (!response.ok) {
+        throw new Error("Failed to fetch group data");
       }
-    };
 
+      const data: GroupData = await response.json();
+      setGroup(data);
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
+  useEffect(() => {
     if (groupId) {
       fetchGroupData();
     }
   }, [groupId]);
+
+  const handleUpdateSuccess = () => {
+    setSelectedExpense(null); // Close the update form
+    fetchGroupData(); // Reload the group data to reflect the updated expense
+  };
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -113,7 +117,7 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
         </ul>
       ) : (
         <div>
-          <UpdateExpense expense={selectedExpense} />
+          <UpdateExpense expense={selectedExpense} onSuccess={handleUpdateSuccess} />
           <button
             type="button"
             onClick={() => setSelectedExpense(null)}

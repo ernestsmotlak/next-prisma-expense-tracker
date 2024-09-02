@@ -130,3 +130,55 @@ export const updateExpense = async (req: Request, res: Response) => {
       .json({ error: "An error occurred while updating the expense" });
   }
 };
+
+export const deleteExpense = async (req: Request, res: Response) => {
+  const { expenseId } = req.params;
+  const { groupId } = req.body;
+
+  try {
+    const expense_id = Number(expenseId);
+    const group_id = Number(groupId);
+
+    if (isNaN(expense_id) || isNaN(group_id)) {
+      return res
+        .status(400)
+        .json({ error: "Invalid input data or missing expenseName" });
+    }
+
+    // Check if the group exists
+    const group = await prisma.group.findUnique({
+      where: { id: group_id },
+    });
+
+    if (!group) {
+      return res.status(404).json({ error: "Group not found" });
+    }
+
+    // Check if the expense exists and belongs to the specified group
+    const expense = await prisma.expense.findFirst({
+      where: {
+        id: expense_id,
+        groupId: group_id,
+      },
+    });
+
+    if (!expense) {
+      return res.status(404).json({ error: "Expense not found in this group" });
+    }
+
+    // Delete the expense
+    await prisma.expense.delete({
+      where: { id: expense_id },
+    });
+
+    // Optionally, update any related data (e.g., balances, totals, etc.)
+    // depending on your application's requirements.
+
+    return res.status(200).json({ message: "Expense deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting expense:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while deleting the expense" });
+  }
+};

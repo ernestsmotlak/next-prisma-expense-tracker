@@ -163,7 +163,7 @@ export const deleteExpense = async (req: Request, res: Response) => {
     });
 
     if (!expense) {
-      return res.status(404).json({ error: "Expense not found in this group" });
+      return res.status(404).json({ error: "Expense not found!" });
     }
 
     // Delete the expense

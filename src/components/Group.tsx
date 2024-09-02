@@ -28,7 +28,9 @@ interface GroupProps {
 const Group: React.FC<GroupProps> = ({ groupId }) => {
   const [group, setGroup] = useState<GroupData | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [selectedExpense, setSelectedExpense] = useState<GroupData['expenses'][0] | null>(null);
+  const [selectedExpense, setSelectedExpense] = useState<
+    GroupData["expenses"][0] | null
+  >(null);
   const router = useRouter();
 
   const fetchGroupData = async () => {
@@ -76,11 +78,14 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
       <h1 className="text-3xl font-bold mb-6 text-center underline underline-offset-8">
         {group.name}
       </h1>
-      <p className="text-center text-xl mb-4">Created by: {group.creator.username}</p>
-
+      <p className="text-center text-xl mb-4">
+        Created by: {group.creator.username}
+      </p>
       <h2 className="text-center text-2xl font-semibold mb-4">Expenses:</h2>
-      <p className="text-center">Here goes the current state of what you owe/are owed!</p> <br/>
-
+      <p className="text-center">
+        Here goes the current state of what you owe/are owed!
+      </p>{" "}
+      <br />
       {!selectedExpense ? (
         <ul>
           {group.expenses.map((expense) => (
@@ -105,19 +110,30 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
                 </span>
               </div>
               <div className="flex flex-col items-center justify-center">
-                <button
-                  type="button"
-                  className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
-                >
-                  Update
-                </button>
+                <div className="flex flex-col space-y-2">
+                  <button
+                    type="button"
+                    className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  >
+                    Update
+                  </button>
+                  <button
+                    type="button"
+                    className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </li>
           ))}
         </ul>
       ) : (
         <div>
-          <UpdateExpense expense={selectedExpense} onSuccess={handleUpdateSuccess} />
+          <UpdateExpense
+            expense={selectedExpense}
+            onSuccess={handleUpdateSuccess}
+          />
           <button
             type="button"
             onClick={() => setSelectedExpense(null)}

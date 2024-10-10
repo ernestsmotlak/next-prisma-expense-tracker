@@ -234,7 +234,9 @@ export const amountOwed = async (req: Request, res: Response) => {
 
     // Calculate the amount the user owes
     const debts = expensesUserOwes.map((expense) => {
-      const beneficiaries = expense.paidFor.split(",").filter(id => id !== String(expense.paidById));
+      const beneficiaries = expense.paidFor
+        .split(",")
+        .filter((id) => id !== String(expense.paidById));
       const amountOwed = expense.amountPaid / beneficiaries.length;
 
       return {
@@ -248,28 +250,32 @@ export const amountOwed = async (req: Request, res: Response) => {
     });
 
     // Calculate the amount others owe the user
-    const credits = expensesUserIsOwed.map((expense) => {
-      const beneficiaries = expense.paidFor.split(",").filter(id => id !== String(expense.paidById));
-      const amountPerPerson = expense.amountPaid / beneficiaries.length;
+    const credits = expensesUserIsOwed
+      .map((expense) => {
+        const beneficiaries = expense.paidFor
+          .split(",")
+          .filter((id) => id !== String(expense.paidById));
+        const amountPerPerson = expense.amountPaid / beneficiaries.length;
 
-      const owedByList = beneficiaries.map((beneficiaryId) => {
-        return {
-          groupId: expense.group.id,
-          groupName: expense.group.name,
-          expenseId: expense.id,
-          amountOwed: amountPerPerson,
-          owedBy: beneficiaryId, // You'll need to look up the username based on this ID if needed
-          expenseName: expense.expenseName,
-        };
-      });
+        const owedByList = beneficiaries.map((beneficiaryId) => {
+          return {
+            groupId: expense.group.id,
+            groupName: expense.group.name,
+            expenseId: expense.id,
+            amountOwed: amountPerPerson,
+            owedBy: beneficiaryId, // You'll need to look up the username based on this ID if needed
+            expenseName: expense.expenseName,
+          };
+        });
 
-      return owedByList;
-    }).flat(); // Flatten the array of arrays
+        return owedByList;
+      })
+      .flat(); // Flatten the array of arrays
 
     // Remove duplicate entries by converting to a Set based on a unique key
-    const uniqueCredits = Array.from(new Set(credits.map(item => JSON.stringify(item)))
-      .values())
-      .map(e => JSON.parse(e));
+    const uniqueCredits = Array.from(
+      new Set(credits.map((item) => JSON.stringify(item))).values()
+    ).map((e) => JSON.parse(e));
 
     return res.status(200).json({ debts, credits: uniqueCredits });
   } catch (error) {

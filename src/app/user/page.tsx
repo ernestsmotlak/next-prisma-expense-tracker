@@ -20,7 +20,10 @@ const Page: React.FC = () => {
       
       {/* Conditionally render components based on the state */}
       {selectedGroupId === null ? (
-        <ShowAllGroups onGroupClick={handleGroupClick} />
+        <div className="text-center"><ShowAllGroups onGroupClick={handleGroupClick} />
+        <br/>
+        aa</div>
+        
       ) : (
         <div>
           <div className="flex justify-center mt-10">

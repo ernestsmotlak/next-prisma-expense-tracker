@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Group from "@/components/Group";
 import ShowAllGroups from "@/components/ShowAllGroups";
+import CreateGroup from "../user/CreateGroup";
 
 const Page: React.FC = () => {
     const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
@@ -41,7 +42,6 @@ const Page: React.FC = () => {
                         <span>Create Group</span>
                     </button>
                     <ShowAllGroups onGroupClick={handleGroupClick} />
-                    aaaa
                 </div>
             ) : (
                 <div>
@@ -57,6 +57,7 @@ const Page: React.FC = () => {
                     <Group groupId={selectedGroupId} />
                 </div>
             )}
+            <CreateGroup />
         </div>
     );
 };

@@ -31,6 +31,12 @@ const CreateGroup: React.FC = () => {
         console.log("Submitted names:", names);
     };
 
+    function removeDuplicates(array: String[]): String []{
+        let noDups = [...new Set(array)];
+        return noDups;
+        
+    }
+
     const handleDelete = (nameToDelete: string) => {
         setNames(names.filter((name) => name !== nameToDelete));
     };

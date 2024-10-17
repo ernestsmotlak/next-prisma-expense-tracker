@@ -23,18 +23,18 @@ const CreateGroup: React.FC = () => {
         // Submit logic here (e.g., send the names array to the server)
 
         if (localStorage.getItem("username")) {
-            // names.unshift(localStorage.getItem("username"));
+            names.unshift(localStorage.getItem("username"));
         } else {
             console.error("Username not found in localStorage!");
         }
 
-        console.log("Submitted names:", names);
+        const newNames = removeDuplicates(names);
+        console.log("Submitted names:", newNames);
     };
 
-    function removeDuplicates(array: String[]): String []{
+    function removeDuplicates(array: String[]): String[] {
         let noDups = [...new Set(array)];
         return noDups;
-        
     }
 
     const handleDelete = (nameToDelete: string) => {
@@ -70,6 +70,25 @@ const CreateGroup: React.FC = () => {
             </form>
 
             <ul className="name-list mt-4 w-full max-w-md">
+                <li className="bg-gray-100 p-2 mb-2 rounded-md shadow-sm flex justify-between items-center">
+                    {localStorage.getItem("username")}
+                    <button className="ml-4 px-2 py-1 bg-green-400 text-white rounded-md hover:bg-green-600">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="size-6"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="m4.5 12.75 6 6 9-13.5"
+                            />
+                        </svg>
+                    </button>
+                </li>
                 {names.map((name, index) => (
                     <li
                         key={index}

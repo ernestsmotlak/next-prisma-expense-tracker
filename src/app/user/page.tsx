@@ -6,7 +6,8 @@ import CreateGroup from "../user/CreateGroup";
 
 const Page: React.FC = () => {
     const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
-    const [isCreateGroupVisible, setCreateGroupisVisible] = useState<boolean>(false);
+    const [isCreateGroupVisible, setCreateGroupisVisible] =
+        useState<boolean>(false);
 
     const handleGroupClick = (groupId: number) => {
         setSelectedGroupId(groupId);
@@ -25,8 +26,11 @@ const Page: React.FC = () => {
             {/* Conditionally render components based on the state */}
             {selectedGroupId === null ? (
                 <div className="text-center">
-                    <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow flex items-center justify-center space-x-2 mx-auto mb-5"
-                            onClick={() => setCreateGroupisVisible(!isCreateGroupVisible)}
+                    <button
+                        className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow flex items-center justify-center space-x-2 mx-auto mb-5"
+                        onClick={() =>
+                            setCreateGroupisVisible(!isCreateGroupVisible)
+                        }
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +67,6 @@ const Page: React.FC = () => {
             {/* <CreateGroup /> */}
 
             {isCreateGroupVisible && <CreateGroup />}
-            
         </div>
     );
 };

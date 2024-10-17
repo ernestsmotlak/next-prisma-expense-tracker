@@ -21,6 +21,13 @@ const CreateGroup: React.FC = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // Submit logic here (e.g., send the names array to the server)
+
+        if (localStorage.getItem("username")) {
+            names.unshift(localStorage.getItem("username"));
+        } else {
+            console.error("Username not found in localStorage!");
+        }
+
         console.log("Submitted names:", names);
     };
 

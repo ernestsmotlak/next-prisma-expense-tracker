@@ -3,9 +3,14 @@ import React, { useState } from "react";
 const CreateGroup: React.FC = () => {
     const [names, setNames] = useState<string[]>([]);
     const [nameInput, setNameInput] = useState<string>("");
+    const [groupName, setGroupName] = useState<string>("");
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNameInput(e.target.value);
+    };
+
+    const handleGroupName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setGroupName(e.target.value);
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -18,23 +23,58 @@ const CreateGroup: React.FC = () => {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Submit logic here (e.g., send the names array to the server)
 
-        if (localStorage.getItem("username")) {
-            names.unshift(localStorage.getItem("username"));
-        } else {
-            console.error("Username not found in localStorage!");
+        if (!groupName.trim()) {
+            console.error("Group name cannot be empty!");
+            return;
         }
 
-        const newNames = removeDuplicates(names);
-        console.log("Submitted names:", newNames);
+        try {
+            const token = localStorage.getItem("token");
+            const userId = localStorage.getItem("userId");
+            const username = localStorage.getItem("username");
+
+            if (!token || !userId || !username) {
+                console.error(
+                    "Missing token, userId, or username in localStorage!"
+                );
+                return;
+            }
+
+            const temp: string[] = [username, ...names];
+            const newNames = removeDuplicates(temp);
+
+            const response = await fetch(
+                `http://localhost:3012/group/${userId}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        groupName,
+                        participants: newNames.join(", "), // Join names as a comma-separated string
+                    }),
+                }
+            );
+
+            // Log response for debugging
+            const responseData = await response.json();
+            console.log("Response Data:", responseData);
+
+            if (!response.ok) {
+                throw new Error("Failed to create a new group!");
+            }
+        } catch (error) {
+            console.error("Error creating group!", error);
+        }
     };
 
-    function removeDuplicates(array: String[]): String[] {
-        let noDups = [...new Set(array)];
-        return noDups;
+    function removeDuplicates(array: string[]): string[] {
+        return [...new Set(array)];
     }
 
     const handleDelete = (nameToDelete: string) => {
@@ -43,9 +83,25 @@ const CreateGroup: React.FC = () => {
 
     return (
         <div className="flex justify-center flex-col items-center mt-4">
-            <h1 className="text-4xl bg-blue-200 p-2 mb-4">Create Group</h1>
+            <h1 className="text-4xl bg-purple-300 p-2 mb-4">Create Group</h1>
 
             <form onSubmit={handleSubmit} className="w-full max-w-md">
+                <label
+                    htmlFor="groupNameInput"
+                    className="block text-lg font-medium mb-2"
+                >
+                    Group Name:
+                </label>
+                <input
+                    type="text"
+                    id="groupNameInput"
+                    value={groupName}
+                    onChange={handleGroupName}
+                    placeholder="Group Name"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                />
+                <br />
+                <br />
                 <label
                     htmlFor="namesInput"
                     className="block text-lg font-medium mb-2"
@@ -69,25 +125,9 @@ const CreateGroup: React.FC = () => {
                 </button>
             </form>
 
-            <ul className="name-list mt-4 w-full max-w-md">
+            <ul className="name-list mt-4 w-full max-w-md mb-80">
                 <li className="bg-gray-100 p-2 mb-2 rounded-md shadow-sm flex justify-between items-center">
                     {localStorage.getItem("username")}
-                    <button className="ml-4 px-2 py-1 bg-green-400 text-white rounded-md hover:bg-green-600">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="size-6"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="m4.5 12.75 6 6 9-13.5"
-                            />
-                        </svg>
-                    </button>
                 </li>
                 {names.map((name, index) => (
                     <li

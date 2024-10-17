@@ -3,14 +3,22 @@ import { useState } from "react";
 import Group from "@/components/Group";
 import ShowAllGroups from "@/components/ShowAllGroups";
 import CreateGroup from "../user/CreateGroup";
+import { useRouter } from "next/navigation";
 
 const Page: React.FC = () => {
+    const router = useRouter();
     const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
     const [isCreateGroupVisible, setCreateGroupisVisible] =
         useState<boolean>(false);
 
     const handleGroupClick = (groupId: number) => {
+        // Save the groupId directly into localStorage
+        localStorage.setItem("selectedGroupId", String(groupId));
+        console.log("from page.tsx of user: " + groupId);
+
         setSelectedGroupId(groupId);
+
+        router.push("/group");
     };
 
     const handleReturn = () => {
@@ -64,7 +72,6 @@ const Page: React.FC = () => {
                     <Group groupId={selectedGroupId} />
                 </div>
             )}
-            {/* <CreateGroup /> */}
 
             {isCreateGroupVisible && <CreateGroup />}
         </div>

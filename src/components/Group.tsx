@@ -96,11 +96,6 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
             <p className="text-center">
                 Here goes the current state of what you owe/are owed!
             </p>{" "}
-
-            {!showComponent ? (<AddExpense />) : (null)}
-            {/* <AddExpense /> */}
-
-
             <div className="flex justify-center mt-4">
                 <button
                     className="flex items-center bg-purple-200 p-2 rounded-md hover:bg-purple-300"
@@ -123,6 +118,7 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
                     <span className="ps-2">Expense</span>
                 </button>
             </div>
+            {!showComponent ? <AddExpense /> : null}
             <br />
             {!selectedExpense ? (
                 <ul>

@@ -27,7 +27,7 @@ interface GroupProps {
 }
 
 const Group: React.FC<GroupProps> = ({ groupId }) => {
-    const [showComponent, setShowComponent] = useState<boolean>(false);
+    const [showComponent, setShowComponent] = useState<boolean>(true);
     const [group, setGroup] = useState<GroupData | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [selectedExpense, setSelectedExpense] = useState<

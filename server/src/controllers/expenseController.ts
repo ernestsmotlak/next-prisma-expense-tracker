@@ -48,9 +48,9 @@ export const getExpensesForUser = async (req: Request, res: Response) => {
 };
 
 export const addExpense = async (req: Request, res: Response) => {
-    const { groupId, amountPaid, paidFor, expenseName, paidByUsername } = req.body;
+    const { groupId, amountPaid, paidFor, expenseName, paidByUsername } =
+        req.body;
     console.log("Received data:", req.body);
-
 
     try {
         // Convert groupId and amountPaid to correct types
@@ -91,10 +91,11 @@ export const addExpense = async (req: Request, res: Response) => {
         res.status(201).json(newExpense); // Respond with the created expense
     } catch (error) {
         console.error("Error adding expense:", error);
-        res.status(500).json({ error: "An error occurred while adding the expense" });
+        res.status(500).json({
+            error: "An error occurred while adding the expense",
+        });
     }
 };
-
 
 export const updateExpense = async (req: Request, res: Response) => {
     const { expenseId } = req.params; // Correctly extract expenseId from URL parameters

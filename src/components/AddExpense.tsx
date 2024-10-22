@@ -21,7 +21,8 @@ const AddExpense: React.FC = () => {
     const [success, setSuccess] = useState<string | null>(null);
 
     // Fetch groupId from localStorage
-    const groupId = localStorage.getItem("groupId");
+    const groupId = localStorage.getItem("selectedGroupId");
+    // console.log('groupId: ', groupId);
 
     // Fetch the group data, including users
     const fetchGroupUsers = async () => {
@@ -81,15 +82,14 @@ const AddExpense: React.FC = () => {
 
         // Payload object
         const expenseData = {
-            groupId: groupId, // Ensure groupId is a string
+            groupId,
             amountPaid,
-            paidFor: paidForUsernamesArray,
+            paidFor: paidForUsernamesArray.join(", "), // Ensure it’s a string
             expenseName,
             paidByUsername,
         };
-        
-        console.log("Expense Data:", expenseData);
 
+        // console.log("Expense Data:", expenseData);
 
         try {
             const token = localStorage.getItem("token");

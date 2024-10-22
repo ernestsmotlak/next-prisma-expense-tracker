@@ -27,6 +27,7 @@ interface GroupProps {
 }
 
 const Group: React.FC<GroupProps> = ({ groupId }) => {
+    const [showComponent, setShowComponent] = useState<boolean>(false);
     const [group, setGroup] = useState<GroupData | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [selectedExpense, setSelectedExpense] = useState<
@@ -77,6 +78,10 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
         return <div>Loading...</div>;
     }
 
+    const showAddExpense = (): void => {
+        setShowComponent(!showComponent);
+    };
+
     return (
         <div className="max-w-3xl mx-auto p-4">
             <h1 className="text-3xl font-bold mb-6 text-center underline underline-offset-8">
@@ -92,27 +97,32 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
                 Here goes the current state of what you owe/are owed!
             </p>{" "}
 
+            {!showComponent ? (<AddExpense />) : (null)}
             {/* <AddExpense /> */}
+
+
             <div className="flex justify-center mt-4">
-            <button className="flex items-center bg-purple-200 p-2 rounded-md hover:bg-purple-300">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6"
+                <button
+                    className="flex items-center bg-purple-200 p-2 rounded-md hover:bg-purple-300"
+                    onClick={showAddExpense}
                 >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 4.5v15m7.5-7.5h-15"
-                    />
-                </svg>
-                <span className="ps-2">Expense</span>
-            </button>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                    </svg>
+                    <span className="ps-2">Expense</span>
+                </button>
             </div>
-            
             <br />
             {!selectedExpense ? (
                 <ul>

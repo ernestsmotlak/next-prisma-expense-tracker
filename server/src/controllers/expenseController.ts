@@ -48,53 +48,53 @@ export const getExpensesForUser = async (req: Request, res: Response) => {
 };
 
 export const addExpense = async (req: Request, res: Response) => {
-    // const { userId } = req.params;
-    const { groupId, amountPaid, paidFor, expenseName, paidBy } = req.body; // Get other data from request body
+    const { groupId, amountPaid, paidFor, expenseName, paidByUsername } = req.body;
+    console.log("Received data:", req.body);
 
-    console.log("groupId:", groupId);
-    console.log("amountPaid:", amountPaid);
-    console.log("paidFor:", paidFor);
-    console.log("expenseName:", expenseName);
-    console.log("userId:", paidBy);
 
     try {
-        // Convert the values to the correct types
+        // Convert groupId and amountPaid to correct types
         const groupIdInt = parseInt(groupId, 10);
-        const paidByInt = parseInt(paidBy, 10);
         const amountPaidFloat = parseFloat(amountPaid);
 
-        // Check if the conversions are successful and if expenseName is provided
+        // Validate input
         if (
             isNaN(groupIdInt) ||
-            isNaN(paidByInt) ||
             isNaN(amountPaidFloat) ||
             !expenseName ||
-            expenseName.trim() === ""
+            expenseName.trim() === "" ||
+            !paidByUsername
         ) {
-            return res
-                .status(400)
-                .json({ error: "Invalid input data or missing expenseName" });
+            return res.status(400).json({ error: "Invalid input data" });
         }
 
-        // Create a new expense linked to the userId from params
+        // Find the user by username
+        const user = await prisma.user.findUnique({
+            where: { username: paidByUsername },
+        });
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        // Create a new expense linked to the userId
         const newExpense = await prisma.expense.create({
             data: {
                 groupId: groupIdInt,
-                paidById: paidByInt,
+                paidById: user.id, // Use the found user's id
                 amountPaid: amountPaidFloat,
                 paidFor: paidFor,
-                expenseName: expenseName, // Explicitly require this field
+                expenseName: expenseName,
             },
         });
 
         res.status(201).json(newExpense); // Respond with the created expense
     } catch (error) {
         console.error("Error adding expense:", error);
-        res.status(500).json({
-            error: "An error occurred while adding the expense",
-        });
+        res.status(500).json({ error: "An error occurred while adding the expense" });
     }
 };
+
 
 export const updateExpense = async (req: Request, res: Response) => {
     const { expenseId } = req.params; // Correctly extract expenseId from URL parameters

@@ -62,7 +62,7 @@ const ShowAllGroups: React.FC<ShowAllGroupsProps> = ({ onGroupClick }) => {
     }
 
     return (
-        <div className="p-6 max-w-4xl mx-auto shadow-lg hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow duration-300 border-solid border-solid border-2 border-gray">
+        <div className="bg-teal-300 p-6 max-w-4xl mx-auto shadow-lg hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow duration-300 border-solid border-solid border-2 border-gray">
             <h1 className="text-3xl font-bold mb-6 text-center">
                 {username}'s Groups
             </h1>
@@ -71,7 +71,7 @@ const ShowAllGroups: React.FC<ShowAllGroupsProps> = ({ onGroupClick }) => {
                     <div
                         key={index}
                         onClick={() => onGroupClick(group.id)}
-                        className="bg-white shadow-md rounded-lg p-4 border border-gray-200 shadow-lg transition-shadow duration-300 bg-orange-100 hover:bg-red-400"
+                        className="bg-white shadow-md rounded-lg p-4 border border-gray-200 shadow-lg transition-shadow duration-300 bg-orange-100 hover:bg-orange-400"
                         style={{ transition: "background-color 0.75s" }}
                     >
                         <h2 className="text-xl font-semibold mb-2">

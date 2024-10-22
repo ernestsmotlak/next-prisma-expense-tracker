@@ -48,25 +48,25 @@ export const getExpensesForUser = async (req: Request, res: Response) => {
 };
 
 export const addExpense = async (req: Request, res: Response) => {
-  const { userId } = req.params; // Get userId from URL parameters
-  const { groupId, amountPaid, paidFor, expenseName } = req.body; // Get other data from request body
+  // const { userId } = req.params;
+  const { groupId, amountPaid, paidFor, expenseName, paidBy } = req.body; // Get other data from request body
 
-  console.log("userId:", userId);
   console.log("groupId:", groupId);
   console.log("amountPaid:", amountPaid);
   console.log("paidFor:", paidFor);
   console.log("expenseName:", expenseName);
+  console.log("userId:", paidBy);
 
   try {
     // Convert the values to the correct types
     const groupIdInt = parseInt(groupId, 10);
-    const userIdInt = parseInt(userId, 10);
+    const paidByInt = parseInt(paidBy, 10);
     const amountPaidFloat = parseFloat(amountPaid);
 
     // Check if the conversions are successful and if expenseName is provided
     if (
       isNaN(groupIdInt) ||
-      isNaN(userIdInt) ||
+      isNaN(paidByInt) ||
       isNaN(amountPaidFloat) ||
       !expenseName ||
       expenseName.trim() === ""
@@ -80,7 +80,7 @@ export const addExpense = async (req: Request, res: Response) => {
     const newExpense = await prisma.expense.create({
       data: {
         groupId: groupIdInt,
-        paidById: userIdInt,
+        paidById: paidByInt,
         amountPaid: amountPaidFloat,
         paidFor: paidFor,
         expenseName: expenseName, // Explicitly require this field

@@ -31,8 +31,12 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
     const [showComponent, setShowComponent] = useState<boolean>(true);
     const [group, setGroup] = useState<GroupData | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [selectedExpense, setSelectedExpense] = useState<GroupData["expenses"][0] | null>(null);
-    const [expenseToDelete, setExpenseToDelete] = useState<GroupData["expenses"][0] | null>(null); // State for deletion
+    const [selectedExpense, setSelectedExpense] = useState<
+        GroupData["expenses"][0] | null
+    >(null);
+    const [expenseToDelete, setExpenseToDelete] = useState<
+        GroupData["expenses"][0] | null
+    >(null); // State for deletion
     const router = useRouter();
 
     const fetchGroupData = async () => {
@@ -181,7 +185,10 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
                                 </div>
                                 {expenseToDelete?.id === expense.id && (
                                     <div className="mt-4">
-                                        <Delete expense={expense} onCancel={handleCancelDelete} />
+                                        <Delete
+                                            expense={expense}
+                                            onCancel={handleCancelDelete}
+                                        />
                                     </div>
                                 )}
                             </li>

@@ -125,8 +125,7 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
                     {group.expenses.map((expense) => (
                         <li
                             key={expense.id}
-                            className="mx-auto w-full max-w-lg mb-4 bg-white shadow-md rounded-lg p-4 border border-gray-200 flex justify-between items-center bg-green-300 cursor-pointer"
-                            onClick={() => setSelectedExpense(expense)}
+                            className="mx-auto w-full max-w-lg mb-4 bg-white shadow-md rounded-lg p-4 border border-gray-200 flex justify-between items-center bg-green-300"
                         >
                             <div>
                                 <strong>{expense.expenseName}</strong>
@@ -150,6 +149,9 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
                                     <button
                                         type="button"
                                         className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                        onClick={() =>
+                                            setSelectedExpense(expense)
+                                        }
                                     >
                                         Update
                                     </button>

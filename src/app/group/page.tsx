@@ -12,7 +12,7 @@ const Page: React.FC = () => {
     useEffect(() => {
         // Retrieve the selectedGroupId from localStorage
         const storedGroupId = localStorage.getItem("selectedGroupId");
-        console.log("from group page.tsx: " + storedGroupId);
+        // console.log("from group page.tsx: " + storedGroupId);
 
         if (storedGroupId) {
             setGroupId(storedGroupId); // Set the state with the retrieved groupId

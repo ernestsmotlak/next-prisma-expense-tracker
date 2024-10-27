@@ -137,61 +137,80 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
                 {!selectedExpense ? (
                     <ul>
                         {group.expenses.map((expense) => (
-                            <li
-                                key={expense.id}
-                                className="mx-auto w-full max-w-lg mb-4 bg-white shadow-md rounded-lg p-4 border border-gray-200 flex flex-col bg-green-300"
-                            >
-                                <div className="flex justify-between items-center">
-                                    <div>
-                                        <strong>{expense.expenseName}</strong>
-                                        <br />
-                                        <span>
-                                            <strong>Amount Paid:</strong> $
-                                            {expense.amountPaid.toFixed(2)}
-                                        </span>
-                                        <br />
-                                        <span>
-                                            <strong>Paid By:</strong>{" "}
-                                            {expense.paidBy.username}
-                                        </span>
-                                        <br />
-                                        <span>
-                                            <strong>Paid For:</strong>{" "}
-                                            {expense.paidFor}
-                                        </span>
-                                    </div>
-                                    <div className="flex flex-col items-center justify-center">
-                                        <div className="flex flex-col space-y-2">
-                                            <button
-                                                type="button"
-                                                className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                                onClick={() =>
-                                                    setSelectedExpense(expense)
-                                                }
-                                            >
-                                                Update
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                                onClick={() =>
-                                                    handleDeleteClick(expense)
-                                                }
-                                            >
-                                                Delete
-                                            </button>
+                            <div key={expense.id}>
+                                <div>
+                                    <li
+                                        key={expense.id}
+                                        className="mx-auto w-full max-w-lg mb-4 bg-white shadow-md rounded-lg p-4 border border-gray-200 flex flex-col bg-green-300"
+                                    >
+                                        <div className="flex justify-between items-center">
+                                            <div>
+                                                <strong>
+                                                    {expense.expenseName}
+                                                </strong>
+                                                <br />
+                                                <span>
+                                                    <strong>
+                                                        Amount Paid:
+                                                    </strong>{" "}
+                                                    $
+                                                    {expense.amountPaid.toFixed(
+                                                        2
+                                                    )}
+                                                </span>
+                                                <br />
+                                                <span>
+                                                    <strong>Paid By:</strong>{" "}
+                                                    {expense.paidBy.username}
+                                                </span>
+                                                <br />
+                                                <span>
+                                                    <strong>Paid For:</strong>{" "}
+                                                    {expense.paidFor}
+                                                </span>
+                                            </div>
+                                            <div className="flex flex-col items-center justify-center">
+                                                <div className="flex flex-col space-y-2">
+                                                    <button
+                                                        type="button"
+                                                        className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                                        onClick={() =>
+                                                            setSelectedExpense(
+                                                                expense
+                                                            )
+                                                        }
+                                                    >
+                                                        Update
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                                        onClick={() =>
+                                                            handleDeleteClick(
+                                                                expense
+                                                            )
+                                                        }
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </li>
                                 </div>
+                                <div>
                                 {expenseToDelete?.id === expense.id && (
-                                    <div className="mt-4">
-                                        <Delete
-                                            expense={expense}
-                                            onCancel={handleCancelDelete}
-                                        />
-                                    </div>
-                                )}
-                            </li>
+                                            <div className="mt-4">
+                                                <Delete
+                                                    expense={expense}
+                                                    onCancel={
+                                                        handleCancelDelete
+                                                    }
+                                                />
+                                            </div>
+                                        )}
+                                </div>
+                            </div>
                         ))}
                     </ul>
                 ) : (

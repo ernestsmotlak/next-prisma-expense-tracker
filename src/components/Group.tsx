@@ -74,6 +74,12 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
         fetchGroupData(); // Reload the group data to reflect the updated expense
     };
 
+    // New function for handling successful deletion
+    const handleDeleteSuccess = () => {
+        setExpenseToDelete(null); // Close the delete confirmation
+        fetchGroupData(); // Reload the group data to reflect the deletion
+    };
+
     const handleDeleteClick = (expense: GroupData["expenses"][0]) => {
         setExpenseToDelete(expense); // Set the expense to delete
     };
@@ -189,7 +195,9 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
                                     <div className="mt-4">
                                         <Delete
                                             expense={expenseToDelete}
+                                            groupId={groupId} // Pass the groupId prop here
                                             onCancel={handleCancelDelete}
+                                            onDeleteSuccess={handleDeleteSuccess} // Pass the success callback
                                         />
                                     </div>
                                 )}

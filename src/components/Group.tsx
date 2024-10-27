@@ -75,11 +75,11 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
     };
 
     const handleDeleteClick = (expense: GroupData["expenses"][0]) => {
-        setExpenseToDelete(expense);
+        setExpenseToDelete(expense); // Set the expense to delete
     };
 
     const handleCancelDelete = () => {
-        setExpenseToDelete(null);
+        setExpenseToDelete(null); // Clear the expense to delete
     };
 
     if (error) {
@@ -96,7 +96,6 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
 
     return (
         <div className="relative max-w-3xl mx-auto p-4">
-            {/* Apply lower opacity to the rest of the page when a delete modal is active */}
             <div>
                 <h1 className="text-3xl font-bold mb-6 text-center underline underline-offset-8">
                     {group.name}
@@ -109,7 +108,7 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
                 </h2>
                 <p className="text-center">
                     Here goes the current state of what you owe/are owed!
-                </p>{" "}
+                </p>
                 <div className="flex justify-center mt-4">
                     <button
                         className="flex items-center bg-purple-200 p-2 rounded-md hover:bg-purple-300"
@@ -132,85 +131,69 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
                         <span className="ps-2">Expense</span>
                     </button>
                 </div>
+
                 {!showComponent ? <AddExpense /> : null}
                 <br />
                 {!selectedExpense ? (
                     <ul>
                         {group.expenses.map((expense) => (
-                            <div key={expense.id}>
-                                <div>
-                                    <li
-                                        key={expense.id}
-                                        className="mx-auto w-full max-w-lg mb-4 bg-white shadow-md rounded-lg p-4 border border-gray-200 flex flex-col bg-green-300"
-                                    >
-                                        <div className="flex justify-between items-center">
-                                            <div>
-                                                <strong>
-                                                    {expense.expenseName}
-                                                </strong>
-                                                <br />
-                                                <span>
-                                                    <strong>
-                                                        Amount Paid:
-                                                    </strong>{" "}
-                                                    $
-                                                    {expense.amountPaid.toFixed(
-                                                        2
-                                                    )}
-                                                </span>
-                                                <br />
-                                                <span>
-                                                    <strong>Paid By:</strong>{" "}
-                                                    {expense.paidBy.username}
-                                                </span>
-                                                <br />
-                                                <span>
-                                                    <strong>Paid For:</strong>{" "}
-                                                    {expense.paidFor}
-                                                </span>
-                                            </div>
-                                            <div className="flex flex-col items-center justify-center">
-                                                <div className="flex flex-col space-y-2">
-                                                    <button
-                                                        type="button"
-                                                        className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                                        onClick={() =>
-                                                            setSelectedExpense(
-                                                                expense
-                                                            )
-                                                        }
-                                                    >
-                                                        Update
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                                        onClick={() =>
-                                                            handleDeleteClick(
-                                                                expense
-                                                            )
-                                                        }
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                            </div>
+                            <li
+                                key={expense.id}
+                                className="mx-auto w-full max-w-lg mb-4 bg-white shadow-md rounded-lg p-4 border border-gray-200 flex flex-col bg-green-300"
+                            >
+                                <div className="flex justify-between items-center">
+                                    <div>
+                                        <strong>{expense.expenseName}</strong>
+                                        <br />
+                                        <span>
+                                            <strong>Amount Paid:</strong> $
+                                            {expense.amountPaid.toFixed(2)}
+                                        </span>
+                                        <br />
+                                        <span>
+                                            <strong>Paid By:</strong>{" "}
+                                            {expense.paidBy.username}
+                                        </span>
+                                        <br />
+                                        <span>
+                                            <strong>Paid For:</strong>{" "}
+                                            {expense.paidFor}
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-col items-center justify-center">
+                                        <div className="flex flex-col space-y-2">
+                                            <button
+                                                type="button"
+                                                className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                                onClick={() =>
+                                                    setSelectedExpense(expense)
+                                                }
+                                            >
+                                                Update
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                                onClick={() =>
+                                                    handleDeleteClick(expense)
+                                                }
+                                            >
+                                                Delete
+                                            </button>
                                         </div>
-                                    </li>
+                                    </div>
                                 </div>
-                                <div>
+
+                                {/* Render Delete component for this specific expense */}
                                 {expenseToDelete?.id === expense.id && (
-                                            <div className="mt-4">
-                                                <Delete
-                                                    expense={expense}
-                                                    onCancel={
-                                                        handleCancelDelete
-                                                    }
-                                                />
-                                            </div>
-                                        )}
-                                </div>
-                            </div>
+                                    <div className="mt-4">
+                                        <Delete
+                                            expense={expenseToDelete}
+                                            onCancel={handleCancelDelete}
+                                        />
+                                    </div>
+                                )}
+                            </li>
                         ))}
                     </ul>
                 ) : (
@@ -229,14 +212,6 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
                     </div>
                 )}
             </div>
-
-            {/* Overlay to apply opacity and allow clicking outside to cancel */}
-            {expenseToDelete && (
-                <div
-                    className="fixed inset-0"
-                    onClick={handleCancelDelete}
-                ></div>
-            )}
         </div>
     );
 };

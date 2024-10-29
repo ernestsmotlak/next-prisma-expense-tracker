@@ -120,7 +120,7 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
                     <div>
                         <Balances
                             group={group} // Pass group data to access expenses
-                            loggedInUserId={loggedInUserId} // Assuming you have the logged-in user ID available
+                            loggedInUser={loggedInUserId} // Assuming you have the logged-in user ID available
                         />
                     </div>
                 </div>

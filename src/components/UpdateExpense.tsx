@@ -21,7 +21,9 @@ const UpdateExpense: React.FC<UpdateExpenseProps> = ({
     onSuccess,
 }) => {
     const [expenseName, setExpenseName] = useState<string>(expense.expenseName);
-    const [amountPaid, setAmountPaid] = useState<number>(expense.amountPaid);
+    const [amountPaid, setAmountPaid] = useState<string>(
+        expense.amountPaid.toString()
+    ); // Handle as string
     const [paidFor, setPaidFor] = useState<string>(expense.paidFor);
     const [paidBy, setPaidBy] = useState<string>(expense.paidBy.username);
 
@@ -31,7 +33,7 @@ const UpdateExpense: React.FC<UpdateExpenseProps> = ({
         const updatedExpense = {
             id: expense.id,
             expenseName,
-            amountPaid,
+            amountPaid: parseFloat(amountPaid), // Convert to number for processing
             paidFor,
             paidBy,
         };
@@ -58,7 +60,6 @@ const UpdateExpense: React.FC<UpdateExpenseProps> = ({
             onSuccess(); // Call the success callback on successful update
         } catch (error) {
             console.error("Error updating expense:", error);
-            // Optionally, handle the error (e.g., show an error message)
         }
     };
 
@@ -87,9 +88,15 @@ const UpdateExpense: React.FC<UpdateExpenseProps> = ({
                     Amount Paid
                 </label>
                 <input
-                    type="number"
+                    type="text"
                     value={amountPaid}
-                    onChange={(e) => setAmountPaid(parseFloat(e.target.value))}
+                    onChange={(e) => {
+                        const inputValue = e.target.value;
+                        if (/^\d*\.?\d*$/.test(inputValue)) {
+                            // Allow valid decimal numbers only
+                            setAmountPaid(inputValue);
+                        }
+                    }}
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                     required
                 />

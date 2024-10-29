@@ -7,7 +7,15 @@ interface GroupProps {
 }
 
 const Balances: React.FC<GroupProps> = ({ group, loggedInUser }) => {
-    return <div className="p-4 bg-gray-100 rounded-md shadow-md">hij!</div>;
+    return (
+        <div className="mt-5 mb-5 p-4 bg-gray-100 rounded-md shadow-md">
+            <h1 className="bg-purple-200 text-xl font-semibold">Balance is shown here:</h1>
+            <br />
+            Group: {JSON.stringify(group)}
+            <br />
+            User: {loggedInUser}
+        </div>
+    );
 };
 
 export default Balances;

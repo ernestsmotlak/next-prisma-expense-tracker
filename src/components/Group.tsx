@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import UpdateExpense from "@/components/UpdateExpense";
 import AddExpense from "./AddExpense";
 import Delete from "./Delete";
+import Balances from "./Balances";
 
 interface GroupData {
     id: number;
@@ -37,6 +38,7 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
     const [expenseToDelete, setExpenseToDelete] = useState<
         GroupData["expenses"][0] | null
     >(null); // State for deletion
+    const loggedInUserId = Number(localStorage.getItem("userId"));
     const router = useRouter();
 
     const fetchGroupData = async () => {
@@ -112,9 +114,16 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
                 <h2 className="text-center text-2xl font-semibold mb-4">
                     Expenses:
                 </h2>
-                <p className="text-center">
+                <div className="text-center">
                     Here goes the current state of what you owe/are owed!
-                </p>
+                    <br />
+                    <div>
+                        <Balances
+                            group={group} // Pass group data to access expenses
+                            loggedInUserId={loggedInUserId} // Assuming you have the logged-in user ID available
+                        />
+                    </div>
+                </div>
                 <div className="flex justify-center mt-4">
                     <button
                         className="flex items-center bg-purple-200 p-2 rounded-md hover:bg-purple-300"
@@ -197,7 +206,9 @@ const Group: React.FC<GroupProps> = ({ groupId }) => {
                                             expense={expenseToDelete}
                                             groupId={groupId} // Pass the groupId prop here
                                             onCancel={handleCancelDelete}
-                                            onDeleteSuccess={handleDeleteSuccess} // Pass the success callback
+                                            onDeleteSuccess={
+                                                handleDeleteSuccess
+                                            } // Pass the success callback
                                         />
                                     </div>
                                 )}

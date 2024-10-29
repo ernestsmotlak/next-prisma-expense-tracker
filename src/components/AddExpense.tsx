@@ -12,13 +12,14 @@ interface Group {
 }
 
 const AddExpense: React.FC = () => {
-    const [amountPaid, setAmountPaid] = useState<number | "">("");
+    const [amountPaid, setAmountPaid] = useState<string>("");
     const [expenseName, setExpenseName] = useState<string>("");
     const [paidByUsername, setPaidByUsername] = useState<string>(""); // Selected user who paid
     const [paidForUsernames, setPaidForUsernames] = useState<string>(""); // Selected users for whom the expense is paid (as comma-separated)
     const [groupUsers, setGroupUsers] = useState<User[]>([]); // Group users state
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
+
 
     // Fetch groupId from localStorage
     const groupId = localStorage.getItem("selectedGroupId");
@@ -67,11 +68,12 @@ const AddExpense: React.FC = () => {
         // Validate input
         if (
             !amountPaid ||
+            isNaN(Number(amountPaid)) ||  // Check if it's a valid number
             !expenseName ||
             !paidByUsername ||
             paidForUsernames.trim() === ""
         ) {
-            setError("Please fill out all fields.");
+            setError("Please fill out all fields with valid data.");
             return;
         }
 
@@ -80,14 +82,13 @@ const AddExpense: React.FC = () => {
             .split(",")
             .map((username) => username.trim());
 
-        // Payload object
-        const expenseData = {
-            groupId,
-            amountPaid,
-            paidFor: paidForUsernamesArray.join(", "), // Ensure it’s a string
-            expenseName,
-            paidByUsername,
-        };
+            const expenseData = {
+                groupId,
+                amountPaid: parseFloat(amountPaid), // Convert to number for processing
+                paidFor: paidForUsernamesArray.join(", "),
+                expenseName,
+                paidByUsername,
+            };
 
         // console.log("Expense Data:", expenseData);
 
@@ -140,10 +141,16 @@ const AddExpense: React.FC = () => {
                         Amount Paid
                     </label>
                     <input
-                        type="number"
+                        type="text"
                         id="amountPaid"
                         value={amountPaid}
-                        onChange={(e) => setAmountPaid(Number(e.target.value))}
+                        onChange={(e) => {
+                            const inputValue = e.target.value;
+                            if (/^\d*\.?\d*$/.test(inputValue)) {
+                                // Regex to allow only valid decimal numbers
+                                setAmountPaid(inputValue);
+                            }
+                        }}
                         className="border p-2 w-full"
                     />
                 </div>

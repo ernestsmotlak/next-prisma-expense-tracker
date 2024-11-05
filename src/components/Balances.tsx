@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { arrayBuffer } from "stream/consumers";
 
 interface Expense {
     id: number;
@@ -46,6 +47,14 @@ const Balances: React.FC<GroupProps> = ({ group, loggedInUser }) => {
 
     console.log('Here we are: ', calculate(group.expenses[0].amountPaid, paidForArray2));
     // console.log('Here we are: ' , calculate(group.expenses[0].amountPaid ,group.expenses[0]));
+
+
+    // get all amounts paid
+    // get all paid for arrays (names of people that were paid for)
+    //     check if any of the paidFor names are the same as the 'paid by name'
+    //         if yes , remove the paidBy name out of the 'paid For array'
+    //     calculate: amountPaid / length of the 'paid For array'
+
 
 
     return (

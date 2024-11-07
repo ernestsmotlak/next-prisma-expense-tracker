@@ -29,33 +29,38 @@ interface GroupProps {
 }
 
 const Balances: React.FC<GroupProps> = ({ group, loggedInUser }) => {
-    // console.log(group);
+    const myUsername: string | null = localStorage.getItem("username");
 
-    const amountsArray = group.expenses.map((expense: Expense) => expense.amountPaid);
-    console.log("Amounts Array:", amountsArray);
+    useEffect(() => {
+        group.expenses.forEach((expense: Expense) => {
+            const amountPaid = expense.amountPaid;
 
-    const paidForArray = group.expenses.map((expense: Expense) => expense.paidFor.split(','));
-    console.log('PaidForArray: ', paidForArray);
+            const paidForArray = expense.paidFor
+                .split(",")
+                .map((name) => name.trim());
 
-    const myUsername = localStorage.getItem('username');
+            const paidByName = expense.paidBy.username;
 
-    const calculate = (amount: number, array: string[]): number[] => {
-        return array.map(() => amount / array.length);
-    };
+            const filteredPaidForArray = paidForArray.filter(
+                (name) => name !== paidByName
+            );
+            
+            const amountPerPerson = amountPaid / paidForArray.length;
 
-    const paidForArray2 = group.expenses[0].paidFor.split(",").map((name: string) => name.trim());
-
-    console.log('Here we are: ', calculate(group.expenses[0].amountPaid, paidForArray2));
-    // console.log('Here we are: ' , calculate(group.expenses[0].amountPaid ,group.expenses[0]));
-
+            console.log(`Expense: ${expense.expenseName}`);
+            console.log(`Amount Paid: ${amountPaid}`);
+            console.log(`Paid For: ${filteredPaidForArray.join(", ")}`);
+            console.log(`Amount per person: ${amountPerPerson}`);
+        });
+    }, []);
 
     // get all amounts paid
     // get all paid for arrays (names of people that were paid for)
+
     //     check if any of the paidFor names are the same as the 'paid by name'
     //         if yes , remove the paidBy name out of the 'paid For array'
-    //     calculate: amountPaid / length of the 'paid For array'
-
-
+    //     calculate: amountPaid / length of the 'paid For array' in another array
+    //     sum the values of the new array and display it
 
     return (
         <div className="mt-5 mb-5 p-4 bg-gray-100 rounded-md shadow-md">

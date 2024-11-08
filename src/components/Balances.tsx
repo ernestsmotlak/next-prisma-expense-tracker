@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { arrayBuffer } from "stream/consumers";
 
 interface Expense {
     id: number;
@@ -29,54 +28,83 @@ interface GroupProps {
 }
 
 const Balances: React.FC<GroupProps> = ({ group, loggedInUser }) => {
-    const myUsername: string | null = localStorage.getItem("username");
+    const [totalBalances, setTotalBalances] = useState<
+        Record<string, { amountOwed: number; owesTo: string[] }>
+    >({});
 
     useEffect(() => {
-        group.expenses.forEach((expense: Expense) => {
-            const amountPaid: number = expense.amountPaid;
+        const balances: Record<
+            string,
+            { amountOwed: number; owesTo: string[] }
+        > = {};
 
-            const paidForArray: string[] = expense.paidFor
+        group.expenses.forEach((expense: Expense) => {
+            const amountPaid = expense.amountPaid;
+            const paidForArray = expense.paidFor
                 .split(",")
                 .map((name) => name.trim());
-
             const paidByName = expense.paidBy.username;
 
-            const filteredPaidForArray: string[] = paidForArray.filter(
+            // Filter out the paidBy person from the list of paidFor people
+            const filteredPaidForArray = paidForArray.filter(
                 (name) => name !== paidByName
             );
 
-            const amountPerPerson: number = amountPaid / paidForArray.length;
+            const amountPerPerson = amountPaid / paidForArray.length; // Amount per person
 
-            const amountArray: number[] = new Array(
-                filteredPaidForArray.length
-            ).fill(amountPerPerson);
-
-            console.log(`Expense: ${expense.expenseName}`);
-            console.log(`Amount Paid: ${amountPaid}`);
-            console.log(`Paid For: ${filteredPaidForArray.join(", ")}`);
-            console.log(`Amount per person: ${amountPerPerson}`);
-            console.log(`Amount Array: [${amountArray.join(", ")}]`);
-            console.log("\n");
+            filteredPaidForArray.forEach((name) => {
+                // Track how much each user owes and who they owe money to
+                if (!balances[name]) {
+                    balances[name] = { amountOwed: 0, owesTo: [] };
+                }
+                balances[name].amountOwed += amountPerPerson; // Add the amount they owe
+                balances[name].owesTo.push(paidByName); // Record who they owe money to
+            });
         });
-    }, []);
 
-    // get all amounts paid
-    // get all paid for arrays (names of people that were paid for)
+        // Update the state with total balances for each user
+        const updatedBalances: Record<
+            string,
+            { amountOwed: number; owesTo: string[] }
+        > = {};
+        for (const [name, balanceData] of Object.entries(balances)) {
+            updatedBalances[name] = balanceData;
+        }
 
-    //     check if any of the paidFor names are the same as the 'paid by name'
-    //         if yes , remove the paidBy name out of the 'paid For array'
-    //     calculate: amountPaid / length of the 'paid For array' in another array
-    //     sum the values of the new array and display it
+        setTotalBalances(updatedBalances);
+    }, [group.expenses]);
 
     return (
-        <div className="mt-5 mb-5 p-4 bg-gray-100 rounded-md shadow-md">
-            <h1 className="bg-purple-200 text-xl font-semibold">
-                Balance is shown here:
+        <div className="mt-5 mb-5 p-6 bg-white rounded-md shadow-lg max-w-md mx-auto">
+            <h1 className="text-2xl font-semibold text-center text-gray-800 mb-4">
+                Balances Owed by Each User
             </h1>
-            <br />
-            Group: {JSON.stringify(group)}
-            <br />
-            User: {loggedInUser}
+            {Object.entries(totalBalances).length === 0 ? (
+                <p className="text-center text-gray-500">
+                    No expenses recorded yet.
+                </p>
+            ) : (
+                <ul className="space-y-4">
+                    {Object.entries(totalBalances).map(
+                        ([name, balanceData], index) => (
+                            <li
+                                key={index}
+                                className="p-4 bg-gray-50 rounded-md shadow-sm"
+                            >
+                                <div className="flex justify-between items-center mb-2">
+                                    <span className="text-lg font-medium text-gray-700">
+                                        {name} Owes to:
+                                    </span>
+                                    <span className="text-lg font-semibold text-blue-600">
+                                        {balanceData.owesTo[0]}{" "}
+                                        ${balanceData.amountOwed.toFixed(2)}
+                                    </span>
+                                </div>
+                            </li>
+                        )
+                    )}
+                </ul>
+            )}
         </div>
     );
 };

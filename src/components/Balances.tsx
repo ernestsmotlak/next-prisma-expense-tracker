@@ -33,24 +33,30 @@ const Balances: React.FC<GroupProps> = ({ group, loggedInUser }) => {
 
     useEffect(() => {
         group.expenses.forEach((expense: Expense) => {
-            const amountPaid = expense.amountPaid;
+            const amountPaid: number = expense.amountPaid;
 
-            const paidForArray = expense.paidFor
+            const paidForArray: string[] = expense.paidFor
                 .split(",")
                 .map((name) => name.trim());
 
             const paidByName = expense.paidBy.username;
 
-            const filteredPaidForArray = paidForArray.filter(
+            const filteredPaidForArray: string[] = paidForArray.filter(
                 (name) => name !== paidByName
             );
-            
-            const amountPerPerson = amountPaid / paidForArray.length;
+
+            const amountPerPerson: number = amountPaid / paidForArray.length;
+
+            const amountArray: number[] = new Array(
+                filteredPaidForArray.length
+            ).fill(amountPerPerson);
 
             console.log(`Expense: ${expense.expenseName}`);
             console.log(`Amount Paid: ${amountPaid}`);
             console.log(`Paid For: ${filteredPaidForArray.join(", ")}`);
             console.log(`Amount per person: ${amountPerPerson}`);
+            console.log(`Amount Array: [${amountArray.join(", ")}]`);
+            console.log("\n");
         });
     }, []);
 

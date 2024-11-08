@@ -75,29 +75,33 @@ const Balances: React.FC<GroupProps> = ({ group, loggedInUser }) => {
     }, [group.expenses]);
 
     return (
-        <div className="mt-5 mb-5 p-6 bg-white rounded-md shadow-lg max-w-md mx-auto">
-            <h1 className="text-2xl font-semibold text-center text-gray-800 mb-4">
+        <div className="mt-8 mb-8 p-6 bg-gray-50 rounded-lg shadow-xl max-w-2xl mx-auto">
+            <h1 className="text-3xl font-semibold text-center text-gray-900 mb-6">
                 Balances Owed by Each User
             </h1>
             {Object.entries(totalBalances).length === 0 ? (
-                <p className="text-center text-gray-500">
+                <p className="text-center text-gray-600">
                     No expenses recorded yet.
                 </p>
             ) : (
-                <ul className="space-y-4">
+                <ul className="space-y-6">
                     {Object.entries(totalBalances).map(
                         ([name, balanceData], index) => (
                             <li
                                 key={index}
-                                className="p-4 bg-gray-50 rounded-md shadow-sm"
+                                className="p-6 bg-white rounded-lg shadow-lg border-l-4 border-teal-500"
                             >
-                                <div className="flex justify-between items-center mb-2">
-                                    <span className="text-lg font-medium text-gray-700">
-                                        {name} Owes to:
+                                <div className="flex items-center justify-between mb-3">
+                                    <span className="text-lg font-medium text-gray-800">
+                                        <strong>{name}</strong> owes
                                     </span>
-                                    <span className="text-lg font-semibold text-blue-600">
-                                        {balanceData.owesTo[0]}{" "}
+                                    <span className="text-lg font-semibold text-teal-600">
                                         ${balanceData.amountOwed.toFixed(2)}
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-lg text-gray-500">
+                                        {balanceData.owesTo[0]}
                                     </span>
                                 </div>
                             </li>
